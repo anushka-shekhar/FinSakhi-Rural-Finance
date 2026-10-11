@@ -1,0 +1,20 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+
+# Environment Variables & Secrets
+.env
+
+# Local SQLite databases (MySQL is primary via finsakhi_db.sql)
+database/*.db
+*.sqlite3
+
+# VS Code / IDE settings
+.vscode/
+.idea/

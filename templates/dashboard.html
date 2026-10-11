@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}My Dashboard - FinSakhi{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 30px; padding-bottom: 50px;">
+  <!-- Welcome Banner -->
+  <div class="dashboard-hero">
+    <div class="dashboard-greeting">
+      <h2>Welcome, {{ user.full_name }}! 👋</h2>
+      <p>📍 Village: <strong>{{ user.village }}</strong> | 🏢 Enterprise: <strong>{{ user.business_type }}</strong></p>
+    </div>
+    <div class="dashboard-meta">
+      <span class="badge badge-success">Active Citizen Member</span>
+    </div>
+  </div>
+
+  <!-- Quick Action Grid -->
+  <div style="margin-bottom: 35px;">
+    <h3 style="color: var(--primary-green); margin-bottom: 15px;">Your Enterprise Toolkit</h3>
+    <div class="card-grid" style="margin-bottom: 25px;">
+      <div class="feature-card">
+        <div class="feature-icon-wrapper">🔍</div>
+        <h4 class="feature-title">Find Matching Schemes</h4>
+        <p class="feature-desc">Check government subsidy and loan schemes tailored for {{ user.business_type }}.</p>
+        <a href="{{ url_for('schemes') }}" class="btn btn-primary btn-sm">Find Schemes &rarr;</a>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon-wrapper">🧮</div>
+        <h4 class="feature-title">Business Calculator</h4>
+        <p class="feature-desc">Calculate monthly revenue, expenses, profit percentage, and safe savings buffer.</p>
+        <a href="{{ url_for('calculator') }}" class="btn btn-primary btn-sm">Calculate Profit &rarr;</a>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon-wrapper">📊</div>
+        <h4 class="feature-title">Monthly Budget</h4>
+        <p class="feature-desc">Track shop inventory, electricity, and household expenses to prevent cash deficits.</p>
+        <a href="{{ url_for('budget_planner') }}" class="btn btn-primary btn-sm">Open Budget &rarr;</a>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon-wrapper">💬</div>
+        <h4 class="feature-title">Submit Feedback</h4>
+        <p class="feature-desc">Send suggestions or questions about schemes directly to FinSakhi administrators.</p>
+        <a href="{{ url_for('feedback') }}" class="btn btn-secondary btn-sm">Give Feedback &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Feedback History -->
+  <div class="table-card">
+    <div class="table-header">
+      <h3 class="table-title">Your Feedback & Suggestions History</h3>
+      <a href="{{ url_for('feedback') }}" class="btn btn-primary btn-sm">+ New Feedback</a>
+    </div>
+
+    {% if feedback_list %}
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Category</th>
+          <th>Rating</th>
+          <th>Message</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for f in feedback_list %}
+        <tr>
+          <td>{{ f.created_at[:10] if f.created_at is string else f.created_at.strftime('%Y-%m-%d') }}</td>
+          <td><span class="badge badge-info">{{ f.category }}</span></td>
+          <td>{{ '★' * f.rating }}</td>
+          <td>{{ f.message }}</td>
+          <td>
+            <span class="badge badge-success">{{ f.status }}</span>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p style="color: var(--text-muted); padding: 15px 0;">You have not submitted any feedback yet. We would love to hear your thoughts!</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

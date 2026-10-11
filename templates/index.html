@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block title %}FinSakhi - Smart Financial Awareness & Guidance for Rural Entrepreneurs{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <h1 class="hero-title">{{ t('hero_title') }}</h1>
+        <p class="hero-desc">{{ t('hero_desc') }}</p>
+        <div class="hero-btns">
+          <a href="{{ url_for('schemes') }}" class="btn btn-secondary" style="background:#ffffff; color:#1b4332; font-weight:700;">
+            🔍 {{ t('get_started') }}
+          </a>
+          <a href="{{ url_for('awareness') }}" class="btn btn-secondary" style="background:rgba(255,255,255,0.2); color:#ffffff; border-color:rgba(255,255,255,0.4);">
+            📚 {{ t('explore_awareness') }}
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <div class="hero-card">
+          <h3>🌱 Empowering Rural Growth</h3>
+          <p style="font-size: 0.92rem; color: #e8f5e9;">
+            Designed especially for village shopkeepers, farmers, women self-help groups (SHGs), and micro-enterprises.
+          </p>
+          <div class="hero-stats">
+            <div class="stat-item">
+              <div class="stat-number">3</div>
+              <div class="stat-label">Languages (EN / HI / MR)</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">100%</div>
+              <div class="stat-label">Verified Guidelines</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How FinSakhi Helps Rural Entrepreneurs -->
+<section class="container" style="margin-bottom: 50px;">
+  <div class="section-header">
+    <h2 class="section-title">{{ t('how_it_helps_title') }}</h2>
+    <p class="section-subtitle">Practical tools and simple guidance to build your financial confidence.</p>
+  </div>
+
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-number">01</div>
+      <h4>{{ t('step1_title') }}</h4>
+      <p>{{ t('step1_desc') }}</p>
+    </div>
+
+    <div class="step-card">
+      <div class="step-number">02</div>
+      <h4>{{ t('step2_title') }}</h4>
+      <p>{{ t('step2_desc') }}</p>
+    </div>
+
+    <div class="step-card">
+      <div class="step-number">03</div>
+      <h4>{{ t('step3_title') }}</h4>
+      <p>{{ t('step3_desc') }}</p>
+    </div>
+
+    <div class="step-card">
+      <div class="step-number">04</div>
+      <h4>{{ t('step4_title') }}</h4>
+      <p>{{ t('step4_desc') }}</p>
+    </div>
+  </div>
+</section>
+
+<!-- Core Feature Modules Cards -->
+<section class="container">
+  <div class="section-header">
+    <h2 class="section-title">{{ t('features_heading') }}</h2>
+    <p class="section-subtitle">Select a tool below to begin managing and growing your enterprise.</p>
+  </div>
+
+  <div class="card-grid">
+    <!-- Card 1: Scheme Finder -->
+    <div class="feature-card">
+      <div>
+        <div class="feature-icon-wrapper">🏛️</div>
+        <h3 class="feature-title">{{ t('nav_schemes') }}</h3>
+        <p class="feature-desc">
+          Enter your village business category and state to match verified central and state subsidy schemes like MUDRA, PMEGP & PM SVANidhi.
+        </p>
+      </div>
+      <a href="{{ url_for('schemes') }}" class="btn btn-primary btn-block">Find Schemes &rarr;</a>
+    </div>
+
+    <!-- Card 2: Business Finance Calculator -->
+    <div class="feature-card">
+      <div>
+        <div class="feature-icon-wrapper">🧮</div>
+        <h3 class="feature-title">{{ t('nav_calculator') }}</h3>
+        <p class="feature-desc">
+          Easily calculate your monthly net profit, profit margin percentage, and savings rate. Understand if your shop is making healthy gains.
+        </p>
+      </div>
+      <a href="{{ url_for('calculator') }}" class="btn btn-primary btn-block">Open Calculator &rarr;</a>
+    </div>
+
+    <!-- Card 3: Budget Planner -->
+    <div class="feature-card">
+      <div>
+        <div class="feature-icon-wrapper">📊</div>
+        <h3 class="feature-title">{{ t('nav_budget') }}</h3>
+        <p class="feature-desc">
+          Organize monthly revenues, raw material stock, shop rent, electricity, and family expenses. See your remaining cash surplus in real time.
+        </p>
+      </div>
+      <a href="{{ url_for('budget_planner') }}" class="btn btn-primary btn-block">Plan Budget &rarr;</a>
+    </div>
+
+    <!-- Card 4: Basic Loan Guidance -->
+    <div class="feature-card">
+      <div>
+        <div class="feature-icon-wrapper">🤝</div>
+        <h3 class="feature-title">{{ t('nav_loans') }}</h3>
+        <p class="feature-desc">
+          Learn what banks check before sanctioning business credit. Estimate your Debt-to-Income (DTI) ratio and review required documentation.
+        </p>
+      </div>
+      <a href="{{ url_for('loan_guidance') }}" class="btn btn-primary btn-block">Loan Guidance &rarr;</a>
+    </div>
+
+    <!-- Card 5: Financial Awareness -->
+    <div class="feature-card">
+      <div>
+        <div class="feature-icon-wrapper">📖</div>
+        <h3 class="feature-title">{{ t('nav_awareness') }}</h3>
+        <p class="feature-desc">
+          Learn how UPI QR codes work, what interest rates banks charge, why insurance protects livestock, and how to maintain cash registers.
+        </p>
+      </div>
+      <a href="{{ url_for('awareness') }}" class="btn btn-primary btn-block">Explore Lessons &rarr;</a>
+    </div>
+
+    <!-- Card 6: Digital Fraud Awareness -->
+    <div class="feature-card">
+      <div>
+        <div class="feature-icon-wrapper">🛡️</div>
+        <h3 class="feature-title">{{ t('nav_fraud') }}</h3>
+        <p class="feature-desc">
+          Protect your shop from UPI PIN scams, fake lottery SMS, fake loan apps, and OTP thieves. Learn the crucial safety rules.
+        </p>
+      </div>
+      <a href="{{ url_for('fraud_awareness') }}" class="btn btn-danger btn-block">Stay Scam-Safe &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action Banner -->
+{% if not user_id and not is_admin %}
+<section class="container" style="margin-bottom: 60px;">
+  <div style="background-color: #ffffff; border: 2px solid var(--accent-green); border-radius: var(--border-radius); padding: 36px; text-align: center;">
+    <h3 style="color: var(--primary-green); font-size: 1.5rem; margin-bottom: 10px;">Join FinSakhi Today</h3>
+    <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto 20px auto;">
+      Create a free account with your village name and business type to save your financial notes and send community feedback.
+    </p>
+    <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+      <a href="{{ url_for('register') }}" class="btn btn-primary">{{ t('nav_register') }}</a>
+      <a href="{{ url_for('login') }}" class="btn btn-secondary">{{ t('nav_login') }}</a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}

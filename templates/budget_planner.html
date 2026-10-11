@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block title %}Monthly Budget Planner - FinSakhi{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 30px; padding-bottom: 50px;">
+  <div class="section-header">
+    <h1 class="section-title">📊 Enterprise Monthly Budget Planner</h1>
+    <p class="section-subtitle">
+      Plan your monthly business outlays and separate commercial purchases from household living costs.
+    </p>
+  </div>
+
+  <div class="form-card" style="max-width: 780px;">
+    <form method="POST" action="{{ url_for('budget_planner') }}">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="monthly_income">Expected Monthly Income / Turnover (₹) *</label>
+          <input type="number" id="monthly_income" name="monthly_income" class="form-control" 
+                 placeholder="e.g. 50000" min="0" step="500" 
+                 value="{{ budget.income if budget and budget.success else '50000' }}" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="target_savings">Target Monthly Savings (₹)</label>
+          <input type="number" id="target_savings" name="target_savings" class="form-control" 
+                 placeholder="e.g. 5000" min="0" step="500" 
+                 value="{{ budget.target_savings if budget and budget.success else '5000' }}">
+        </div>
+      </div>
+
+      <h4 style="color: var(--primary-green); margin: 20px 0 15px 0; border-bottom: 2px solid var(--border-cream); padding-bottom: 6px;">
+        Monthly Expenses Breakdown (खर्चाचा तपशील)
+      </h4>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Raw Materials / Goods Stock (कच्चा माल / खरेदी)</label>
+          <input type="number" name="exp_raw_materials" class="form-control expense-item" 
+                 placeholder="₹" min="0" 
+                 value="{{ budget.expenses_breakdown['Raw Materials / Stock'] if budget and budget.success else '20000' }}">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Shop / Stall Rent (दुकान भाडे)</label>
+          <input type="number" name="exp_rent" class="form-control expense-item" 
+                 placeholder="₹" min="0" 
+                 value="{{ budget.expenses_breakdown['Shop Rent / Stall Fee'] if budget and budget.success else '4000' }}">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Electricity, Water & Fuel (वीज व पाणी बिल)</label>
+          <input type="number" name="exp_utilities" class="form-control expense-item" 
+                 placeholder="₹" min="0" 
+                 value="{{ budget.expenses_breakdown['Electricity & Water'] if budget and budget.success else '1500' }}">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Transport & Freight (वाहतूक खर्च)</label>
+          <input type="number" name="exp_transport" class="form-control expense-item" 
+                 placeholder="₹" min="0" 
+                 value="{{ budget.expenses_breakdown['Transport & Freight'] if budget and budget.success else '2500' }}">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Household Family Withdrawal (घरखर्च)</label>
+          <input type="number" name="exp_household" class="form-control expense-item" 
+                 placeholder="₹" min="0" 
+                 value="{{ budget.expenses_breakdown['Household Expenses'] if budget and budget.success else '12000' }}">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Miscellaneous & Maintenance (इतर खर्च)</label>
+          <input type="number" name="exp_misc" class="form-control expense-item" 
+                 placeholder="₹" min="0" 
+                 value="{{ budget.expenses_breakdown['Miscellaneous'] if budget and budget.success else '1000' }}">
+        </div>
+      </div>
+
+      <!-- Live Calculation Bar -->
+      <div style="background-color: var(--warm-cream); padding: 14px 18px; border-radius: 8px; margin: 15px 0 20px 0; display: flex; justify-content: space-between; font-size: 0.95rem;">
+        <span>Total Expenses: <strong id="live-total-expenses" style="color:var(--danger-red);">₹ 41,000</strong></span>
+        <span>Net Cash Balance: <strong id="live-net-balance" style="color:var(--primary-green);">₹ 4,000</strong></span>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">
+        Generate Budget Summary &rarr;
+      </button>
+    </form>
+
+    <!-- Server Calculation Result -->
+    {% if budget and budget.success %}
+    <div class="result-card" style="margin-top: 30px;">
+      <h3 style="color: var(--primary-green); font-size: 1.3rem; margin-bottom: 15px;">Monthly Budget Summary</h3>
+
+      <div class="metrics-grid">
+        <div class="metric-box">
+          <div class="metric-title">Total Income</div>
+          <div class="metric-value">₹ {{ "{:,.0f}".format(budget.income) }}</div>
+        </div>
+
+        <div class="metric-box">
+          <div class="metric-title">Total Expenses</div>
+          <div class="metric-value danger">₹ {{ "{:,.0f}".format(budget.total_expenses) }}</div>
+        </div>
+
+        <div class="metric-box">
+          <div class="metric-title">Target Savings</div>
+          <div class="metric-value">₹ {{ "{:,.0f}".format(budget.target_savings) }}</div>
+        </div>
+
+        <div class="metric-box">
+          <div class="metric-title">Net Surplus / Balance</div>
+          <div class="metric-value {% if budget.balance_after_savings < 0 %}danger{% endif %}">
+            ₹ {{ "{:,.0f}".format(budget.balance_after_savings) }}
+          </div>
+        </div>
+      </div>
+
+      <h4 style="color: var(--primary-green); margin: 20px 0 10px 0;">Category Percentage of Income</h4>
+      <div style="background-color: var(--warm-cream); border-radius: 8px; padding: 15px;">
+        {% for cat, amt in budget.expenses_breakdown.items() %}
+        <div style="margin-bottom: 10px;">
+          <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 3px;">
+            <span>{{ cat }} (₹ {{ "{:,.0f}".format(amt) }})</span>
+            <strong>{{ budget.percentages[cat] }}%</strong>
+          </div>
+          <div style="background-color: #e9ecef; border-radius: 4px; height: 8px; overflow: hidden;">
+            <div style="background-color: var(--accent-green); height: 100%; width: {{ budget.percentages[cat] }}%;"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      {% if budget.balance_after_savings >= 0 %}
+        <div class="alert alert-success" style="margin-top: 15px; margin-bottom: 0;">
+          <strong>Budget Balanced:</strong> You have a surplus of ₹ {{ "{:,.0f}".format(budget.balance_after_savings) }} left over after funding your planned savings!
+        </div>
+      {% else %}
+        <div class="alert alert-danger" style="margin-top: 15px; margin-bottom: 0;">
+          <strong>Deficit Alert:</strong> Your expenses plus target savings exceed your monthly turnover by ₹ {{ "{:,.0f}".format(budget.balance_after_savings|abs) }}. Consider reducing household withdrawals or non-urgent miscellaneous costs.
+        </div>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/budget.js') }}"></script>
+{% endblock %}

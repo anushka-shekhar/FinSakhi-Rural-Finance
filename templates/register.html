@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Register - FinSakhi Rural Entrepreneur Portal{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 30px;">
+  <div class="form-card">
+    <div style="text-align: center; margin-bottom: 20px;">
+      <h2 class="form-title">Rural Entrepreneur Registration</h2>
+      <p class="form-subtitle">Create your FinSakhi profile to access personalized business guidance.</p>
+    </div>
+
+    <form method="POST" action="{{ url_for('register') }}">
+      <div class="form-group">
+        <label class="form-label" for="full_name">Full Name / पूर्ण नाव / पूरा नाम *</label>
+        <input type="text" id="full_name" name="full_name" class="form-control" placeholder="e.g. Sunita Ramesh Patil" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="mobile_number">10-Digit Mobile Number / मोबाइल नंबर *</label>
+        <input type="tel" id="mobile_number" name="mobile_number" class="form-control" placeholder="e.g. 9876543210" pattern="[0-9]{10}" maxlength="10" required>
+        <div class="form-help">Enter 10 numeric digits. Used as your login ID.</div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="village">Village / Town / गाव / गाँव *</label>
+          <input type="text" id="village" name="village" class="form-control" placeholder="e.g. Khed, Dist. Pune" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="business_type">Business Type / व्यवसाय प्रकार *</label>
+          <select id="business_type" name="business_type" class="form-control" required>
+            <option value="">-- Select Your Business --</option>
+            <option value="Agriculture & Dairy">Agriculture & Dairy (शेती व दुग्धव्यवसाय)</option>
+            <option value="Small Grocery / Kirana">Small Grocery / Kirana (किराणा दुकान)</option>
+            <option value="Handicrafts & Tailoring">Handicrafts & Tailoring (शिलाई व हस्तकला)</option>
+            <option value="Food Stall">Food Stall / Catering (खाद्यपदार्थ / उपहारगृह)</option>
+            <option value="Poultry & Livestock">Poultry & Livestock (कुक्कुटपालन / शेळीपालन)</option>
+            <option value="Service & Repairs">Service & Repairs (दुरुस्ती व सेवा केंद्र)</option>
+            <option value="Other Micro Enterprise">Other Micro Enterprise (इतर लघुउद्योग)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="password">Create Password / पासवर्ड तयार करा *</label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="Minimum 6 characters" minlength="6" required>
+        <div class="form-help">Passwords are securely hashed before storage in the MySQL database.</div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block" style="margin-top: 10px;">
+        Register Account &rarr;
+      </button>
+    </form>
+
+    <div style="text-align: center; margin-top: 22px; padding-top: 15px; border-top: 1px solid var(--border-cream); font-size: 0.92rem;">
+      Already registered? <a href="{{ url_for('login') }}" style="color: var(--accent-green); font-weight: 700;">Log in here</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Financial Awareness - FinSakhi{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 30px; padding-bottom: 50px;">
+  <div class="section-header">
+    <h1 class="section-title">📚 Financial Awareness Lessons</h1>
+    <p class="section-subtitle">
+      Essential financial knowledge written in simple everyday language with practical village examples.
+    </p>
+  </div>
+
+  <div class="card-grid">
+    {% for a in articles %}
+    <div class="feature-card">
+      <div>
+        <div class="feature-icon-wrapper">
+          {% if 'upi' in a.category_slug %}📱
+          {% elif 'bank' in a.category_slug %}🏦
+          {% elif 'loan' in a.category_slug %}💼
+          {% elif 'insurance' in a.category_slug %}🛡️
+          {% elif 'savings' in a.category_slug %}💰
+          {% else %}📈{% endif %}
+        </div>
+        
+        <h3 class="feature-title">
+          {% if current_lang == 'hi' %}{{ a.title_hi }}
+          {% elif current_lang == 'mr' %}{{ a.title_mr }}
+          {% else %}{{ a.title_en }}{% endif %}
+        </h3>
+
+        <p class="feature-desc">
+          {% if current_lang == 'hi' %}{{ a.explanation_hi[:140] }}...
+          {% elif current_lang == 'mr' %}{{ a.explanation_mr[:140] }}...
+          {% else %}{{ a.explanation_en[:140] }}...{% endif %}
+        </p>
+      </div>
+
+      <a href="{{ url_for('awareness_detail', category_slug=a.category_slug) }}" class="btn btn-secondary btn-block">
+        Read Full Lesson &rarr;
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

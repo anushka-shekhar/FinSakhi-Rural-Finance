@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Administrator Control Center - FinSakhi{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 30px; padding-bottom: 50px;">
+  <!-- Admin Header -->
+  <div class="dashboard-hero">
+    <div class="dashboard-greeting">
+      <h2>🛡️ FinSakhi System Administration</h2>
+      <p>Content Management System (CMS), Scheme Database, and Citizen Feedback Review</p>
+    </div>
+    <div class="dashboard-meta">
+      <a href="{{ url_for('admin_schemes') }}" class="btn btn-primary btn-sm">⚙️ Manage Schemes</a>
+      <a href="{{ url_for('logout') }}" class="btn btn-secondary btn-sm">Exit Admin</a>
+    </div>
+  </div>
+
+  <!-- Metric Statistics Cards -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">👥</div>
+      <div class="stat-info">
+        <h4>Registered Entrepreneurs</h4>
+        <div class="stat-val">{{ stats.users }}</div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">🏛️</div>
+      <div class="stat-info">
+        <h4>Government Schemes</h4>
+        <div class="stat-val">{{ stats.schemes }}</div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">💬</div>
+      <div class="stat-info">
+        <h4>Citizen Feedback</h4>
+        <div class="stat-val">{{ stats.feedback }}</div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">📚</div>
+      <div class="stat-info">
+        <h4>Awareness Lessons</h4>
+        <div class="stat-val">{{ stats.articles }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Admin Actions -->
+  <div style="margin-bottom: 30px; display: flex; gap: 12px; flex-wrap: wrap;">
+    <a href="{{ url_for('admin_add_scheme') }}" class="btn btn-primary">+ Add New Government Scheme</a>
+    <a href="{{ url_for('admin_schemes') }}" class="btn btn-secondary">View / Edit All Schemes</a>
+    <a href="{{ url_for('awareness') }}" class="btn btn-secondary">Review Financial Lessons</a>
+  </div>
+
+  <!-- User Feedback Review Table -->
+  <div class="table-card">
+    <div class="table-header">
+      <h3 class="table-title">Recent Citizen Feedback & Inquiries</h3>
+      <span class="badge badge-info">{{ feedback_list|length }} Inquiries Displayed</span>
+    </div>
+
+    {% if feedback_list %}
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Citizen Name</th>
+          <th>Mobile</th>
+          <th>Category</th>
+          <th>Rating</th>
+          <th>Message</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for f in feedback_list %}
+        <tr>
+          <td>{{ f.created_at[:10] if f.created_at is string else f.created_at.strftime('%Y-%m-%d') }}</td>
+          <td><strong>{{ f.user_name }}</strong></td>
+          <td>{{ f.mobile_number }}</td>
+          <td><span class="badge badge-info">{{ f.category }}</span></td>
+          <td>{{ '★' * f.rating }}</td>
+          <td style="max-width: 320px;">{{ f.message }}</td>
+          <td><span class="badge badge-success">{{ f.status }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p style="color: var(--text-muted); padding: 15px 0;">No citizen feedback recorded yet.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

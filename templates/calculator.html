@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Business Finance Calculator - FinSakhi{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 30px; padding-bottom: 50px;">
+  <div class="section-header">
+    <h1 class="section-title">🧮 Business Finance Calculator</h1>
+    <p class="section-subtitle">
+      Compute your net monthly profit, profit margin percentage, and savings rate to ensure your enterprise stays profitable.
+    </p>
+  </div>
+
+  <div class="form-card" style="max-width: 700px;">
+    <form method="POST" action="{{ url_for('calculator') }}">
+      <div class="form-group">
+        <label class="form-label" for="monthly_income">Total Monthly Income / Sales (₹) *</label>
+        <input type="number" id="monthly_income" name="monthly_income" class="form-control" 
+               placeholder="e.g. 45000" min="0" step="500" 
+               value="{{ result.income if result and result.success else '' }}" required>
+        <div class="form-help">Total gross sales revenue received from your shop/work in a month.</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="monthly_expenses">Total Monthly Operating Expenses (₹) *</label>
+        <input type="number" id="monthly_expenses" name="monthly_expenses" class="form-control" 
+               placeholder="e.g. 30000" min="0" step="500" 
+               value="{{ result.expenses if result and result.success else '' }}" required>
+        <div class="form-help">Cost of raw materials, inventory, rent, electricity, transport, and labor.</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="monthly_savings">Monthly Planned Savings (₹)</label>
+        <input type="number" id="monthly_savings" name="monthly_savings" class="form-control" 
+               placeholder="e.g. 5000" min="0" step="500" 
+               value="{{ result.savings if result and result.success else '0' }}">
+        <div class="form-help">Amount deposited in bank/post office RD or kept as emergency reserve.</div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">
+        Calculate Profit & Savings &rarr;
+      </button>
+    </form>
+
+    <!-- Client-Side Live Preview Counter -->
+    <div style="margin-top: 25px; padding: 15px; background-color: var(--warm-cream); border-radius: 8px; border: 1px dashed var(--border-cream);">
+      <div style="font-size: 0.82rem; font-weight: 700; color: var(--accent-green); text-transform: uppercase; margin-bottom: 8px;">
+        ⚡ Instant Preview (Live Typing)
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 0.95rem;">
+        <span>Estimated Profit: <strong id="live-profit" style="color:var(--primary-green);">₹ 0</strong></span>
+        <span>Profit Margin: <strong id="live-profit-pct">0%</strong></span>
+        <span>Savings Rate: <strong id="live-savings-pct">0%</strong></span>
+      </div>
+    </div>
+
+    <!-- Server Calculation Result -->
+    {% if result %}
+      {% if result.success %}
+      <div class="result-card" style="margin-top: 30px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+          <h3 style="color: var(--primary-green); font-size: 1.3rem;">Financial Assessment Result</h3>
+          <span class="badge badge-{{ result.health_color }}">{{ result.health_status }}</span>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-box">
+            <div class="metric-title">Monthly Net Profit</div>
+            <div class="metric-value {% if result.profit < 0 %}danger{% endif %}">
+              ₹ {{ "{:,.2f}".format(result.profit) }}
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Income - Expenses</div>
+          </div>
+
+          <div class="metric-box">
+            <div class="metric-title">Profit Margin (%)</div>
+            <div class="metric-value {% if result.profit_percentage < 0 %}danger{% endif %}">
+              {{ result.profit_percentage }}%
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">(Profit / Income) × 100</div>
+          </div>
+
+          <div class="metric-box">
+            <div class="metric-title">Savings Rate (%)</div>
+            <div class="metric-value">
+              {{ result.savings_percentage }}%
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">(Savings / Income) × 100</div>
+          </div>
+
+          <div class="metric-box">
+            <div class="metric-title">Surplus Remaining</div>
+            <div class="metric-value {% if result.remaining_after_savings < 0 %}danger{% endif %}">
+              ₹ {{ "{:,.2f}".format(result.remaining_after_savings) }}
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Profit - Savings</div>
+          </div>
+        </div>
+
+        <div class="alert alert-{{ result.health_color }}" style="margin-top: 15px; margin-bottom: 0;">
+          <strong>Guidance Note:</strong> {{ result.health_message }}
+        </div>
+      </div>
+      {% else %}
+      <div class="alert alert-danger" style="margin-top: 20px;">
+        {{ result.error }}
+      </div>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/calculator.js') }}"></script>
+{% endblock %}

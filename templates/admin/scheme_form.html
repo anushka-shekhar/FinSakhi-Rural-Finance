@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}{{ action }} Scheme - FinSakhi Admin{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 30px; padding-bottom: 50px;">
+  <!-- Breadcrumb -->
+  <div style="margin-bottom: 20px; font-size: 0.9rem; color: var(--text-muted);">
+    <a href="{{ url_for('admin_schemes') }}" style="color: var(--accent-green); text-decoration: none;">&larr; Back to Schemes List</a>
+  </div>
+
+  <div class="form-card" style="max-width: 850px;">
+    <h2 class="form-title" style="margin-bottom: 6px;">{{ action }} Government Scheme</h2>
+    <p class="form-subtitle">Fill in official scheme parameters, eligibility limits, and required documents.</p>
+
+    <form method="POST">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="scheme_name">Scheme Name *</label>
+          <input type="text" id="scheme_name" name="scheme_name" class="form-control" 
+                 value="{{ scheme.scheme_name if scheme else '' }}" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="scheme_code">Scheme Code (Unique) *</label>
+          <input type="text" id="scheme_code" name="scheme_code" class="form-control" 
+                 placeholder="e.g. PMMY-SHISHU" value="{{ scheme.scheme_code if scheme else '' }}" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="category">Category *</label>
+          <input type="text" id="category" name="category" class="form-control" 
+                 placeholder="e.g. Micro Business Loan" value="{{ scheme.category if scheme else '' }}" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="state_applicability">State Applicability *</label>
+          <input type="text" id="state_applicability" name="state_applicability" class="form-control" 
+                 placeholder="e.g. All India or Maharashtra" value="{{ scheme.state_applicability if scheme else 'All India' }}" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="eligible_business_types">Eligible Business Types (Comma-separated) *</label>
+        <input type="text" id="eligible_business_types" name="eligible_business_types" class="form-control" 
+               placeholder="e.g. All, Small Grocery / Kirana, Agriculture & Dairy" 
+               value="{{ scheme.eligible_business_types if scheme else 'All' }}" required>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="min_loan_amount">Minimum Loan (₹) *</label>
+          <input type="number" id="min_loan_amount" name="min_loan_amount" class="form-control" 
+                 value="{{ scheme.min_loan_amount if scheme else '10000' }}" step="1000" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="max_loan_amount">Maximum Loan (₹) *</label>
+          <input type="number" id="max_loan_amount" name="max_loan_amount" class="form-control" 
+                 value="{{ scheme.max_loan_amount if scheme else '500000' }}" step="5000" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="max_annual_income">Max Annual Income Limit (₹) (0 for no limit)</label>
+          <input type="number" id="max_annual_income" name="max_annual_income" class="form-control" 
+                 value="{{ scheme.max_annual_income if scheme else '0' }}" step="5000">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="subsidy_percentage">Subsidy Percentage (%)</label>
+          <input type="number" id="subsidy_percentage" name="subsidy_percentage" class="form-control" 
+                 value="{{ scheme.subsidy_percentage if scheme else '0' }}" step="0.5" min="0" max="100">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="description_en">Description (English) *</label>
+        <textarea id="description_en" name="description_en" class="form-control" rows="3" required>{{ scheme.description_en if scheme else '' }}</textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="description_hi">Description (Hindi - हिन्दी)</label>
+        <textarea id="description_hi" name="description_hi" class="form-control" rows="3">{{ scheme.description_hi if scheme else '' }}</textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="description_mr">Description (Marathi - मराठी)</label>
+        <textarea id="description_mr" name="description_mr" class="form-control" rows="3">{{ scheme.description_mr if scheme else '' }}</textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="required_documents">Required Documents *</label>
+        <textarea id="required_documents" name="required_documents" class="form-control" rows="2" required>{{ scheme.required_documents if scheme else '' }}</textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="how_to_apply">How to Apply Instructions *</label>
+        <textarea id="how_to_apply" name="how_to_apply" class="form-control" rows="2" required>{{ scheme.how_to_apply if scheme else '' }}</textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="official_portal">Official Web Portal URL</label>
+        <input type="url" id="official_portal" name="official_portal" class="form-control" 
+               placeholder="https://..." value="{{ scheme.official_portal if scheme else '' }}">
+      </div>
+
+      <div style="display: flex; gap: 15px; margin-top: 25px;">
+        <button type="submit" class="btn btn-primary">
+          💾 Save Scheme Record
+        </button>
+        <a href="{{ url_for('admin_schemes') }}" class="btn btn-secondary">
+          Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

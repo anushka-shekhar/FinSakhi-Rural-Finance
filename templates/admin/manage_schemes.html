@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Government Schemes - Admin{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 30px; padding-bottom: 50px;">
+  <!-- Header -->
+  <div class="dashboard-hero">
+    <div class="dashboard-greeting">
+      <h2>🏛️ Manage Government Schemes (CRUD)</h2>
+      <p>Direct relational database operations on the <code>schemes</code> table.</p>
+    </div>
+    <div class="dashboard-meta">
+      <a href="{{ url_for('admin_add_scheme') }}" class="btn btn-primary btn-sm">+ Add New Scheme</a>
+      <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary btn-sm">&larr; Back to Dashboard</a>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header">
+      <h3 class="table-title">Registered Schemes Database Records</h3>
+      <span class="badge badge-info">{{ schemes|length }} Active Records</span>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Scheme Name</th>
+          <th>Code</th>
+          <th>Category</th>
+          <th>State</th>
+          <th>Max Loan</th>
+          <th>Subsidy</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in schemes %}
+        <tr>
+          <td>{{ s.id }}</td>
+          <td><strong>{{ s.scheme_name }}</strong></td>
+          <td><code>{{ s.scheme_code }}</code></td>
+          <td>{{ s.category }}</td>
+          <td>{{ s.state_applicability }}</td>
+          <td>₹ {{ "{:,.0f}".format(s.max_loan_amount) }}</td>
+          <td>
+            {% if s.subsidy_percentage > 0 %}
+              <span class="badge badge-success">{{ s.subsidy_percentage }}%</span>
+            {% else %}
+              <span class="badge badge-info">0% (Credit)</span>
+            {% endif %}
+          </td>
+          <td>
+            <div class="action-buttons">
+              <a href="{{ url_for('admin_edit_scheme', scheme_id=s.id) }}" class="btn btn-secondary btn-sm">Edit</a>
+              
+              <form method="POST" action="{{ url_for('admin_delete_scheme', scheme_id=s.id) }}" 
+                    onsubmit="return confirm('Are you sure you want to delete scheme: {{ s.scheme_name }}?');" 
+                    style="display:inline;">
+                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

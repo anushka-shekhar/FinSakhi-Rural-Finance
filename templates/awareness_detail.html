@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}{{ article.title }} - FinSakhi{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 30px; padding-bottom: 50px;">
+  <!-- Breadcrumb -->
+  <div style="margin-bottom: 20px; font-size: 0.9rem; color: var(--text-muted);">
+    <a href="{{ url_for('awareness') }}" style="color: var(--accent-green); text-decoration: none;">&larr; All Financial Lessons</a>
+  </div>
+
+  <div class="form-card" style="max-width: 850px; margin: 0 auto 30px auto;">
+    <h1 style="color: var(--primary-green); font-size: 1.8rem; margin-bottom: 16px;">
+      {{ article.title }}
+    </h1>
+
+    <!-- 1. Explanation -->
+    <div style="margin-bottom: 24px; line-height: 1.8; font-size: 1.05rem;">
+      <h3 style="color: var(--accent-green); font-size: 1.15rem; margin-bottom: 8px;">
+        📖 What is this? (सोपे स्पष्टीकरण / सरल समझ)
+      </h3>
+      <p>{{ article.explanation }}</p>
+    </div>
+
+    <!-- 2. Practical Example -->
+    <div style="background-color: var(--warm-cream); border-left: 4px solid var(--accent-green); padding: 18px 22px; border-radius: 8px; margin-bottom: 24px;">
+      <h3 style="color: var(--primary-green); font-size: 1.1rem; margin-bottom: 6px;">
+        💡 Real-Life Example (व्यावहारिक उदाहरण / उदाहरण)
+      </h3>
+      <p style="font-size: 0.98rem; color: var(--text-dark); line-height: 1.6;">
+        {{ article.example }}
+      </p>
+    </div>
+
+    <!-- 3. Safety Tips -->
+    <div style="background-color: #fff3cd; border: 1px solid #ffeeba; padding: 18px 22px; border-radius: 8px; margin-bottom: 30px;">
+      <h3 style="color: #856404; font-size: 1.1rem; margin-bottom: 6px;">
+        🔒 Crucial Safety Rule (महत्त्वाचा सुरक्षा नियम / सुरक्षा सुझाव)
+      </h3>
+      <p style="font-size: 0.98rem; color: #664d03; line-height: 1.6; font-weight: 500;">
+        {{ article.safety_tips }}
+      </p>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-cream); padding-top: 20px;">
+      <a href="{{ url_for('awareness') }}" class="btn btn-secondary btn-sm">&larr; Back to Catalog</a>
+      <a href="{{ url_for('fraud_awareness') }}" class="btn btn-primary btn-sm">Read Fraud Safety Guide &rarr;</a>
+    </div>
+  </div>
+
+  <!-- Related Topics -->
+  {% if other_topics %}
+  <div style="max-width: 850px; margin: 0 auto;">
+    <h3 style="color: var(--primary-green); margin-bottom: 15px;">Other Lessons You Can Read</h3>
+    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+      {% for ot in other_topics %}
+        <a href="{{ url_for('awareness_detail', category_slug=ot.category_slug) }}" class="btn btn-secondary btn-sm">
+          {% if current_lang == 'hi' %}{{ ot.title_hi }}
+          {% elif current_lang == 'mr' %}{{ ot.title_mr }}
+          {% else %}{{ ot.title_en }}{% endif %}
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

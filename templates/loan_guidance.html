@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Basic Loan Guidance - FinSakhi{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 30px; padding-bottom: 50px;">
+  <div class="section-header">
+    <h1 class="section-title">🤝 Basic Loan Guidance & Readiness</h1>
+    <p class="section-subtitle">
+      Understand what commercial and rural banks evaluate when reviewing loan applications.
+    </p>
+  </div>
+
+  <div class="disclaimer-banner">
+    ⚠️ <strong>Important Educational Disclaimer:</strong> FinSakhi is an academic awareness tool. We do not approve, guarantee, or issue bank loans. Formal credit eligibility is assessed solely by authorized banking institutions and NBFCs.
+  </div>
+
+  <div class="form-card" style="max-width: 750px;">
+    <form method="POST" action="{{ url_for('loan_guidance') }}">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="annual_income">Annual Business Turnover / Income (₹) *</label>
+          <input type="number" id="annual_income" name="annual_income" class="form-control" 
+                 placeholder="e.g. 240000" min="1000" step="5000" 
+                 value="{{ guidance.annual_income if guidance and guidance.success else '' }}" required>
+          <div class="form-help">Total business earnings in the previous 12 months.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="business_age">Business Age / Operating Experience (Years) *</label>
+          <input type="number" id="business_age" name="business_age" class="form-control" 
+                 placeholder="e.g. 2" min="0" step="0.5" 
+                 value="{{ guidance.business_age_years if guidance and guidance.success else '' }}" required>
+          <div class="form-help">How many years your enterprise has been running.</div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="existing_loan">Current Outstanding Loans (₹)</label>
+          <input type="number" id="existing_loan" name="existing_loan" class="form-control" 
+                 placeholder="e.g. 15000" min="0" step="1000" 
+                 value="{{ guidance.existing_loan if guidance and guidance.success else '0' }}">
+          <div class="form-help">Enter 0 if you currently have no pending bank or SHG loans.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="required_loan">Requested New Loan Amount (₹) *</label>
+          <input type="number" id="required_loan" name="required_loan" class="form-control" 
+                 placeholder="e.g. 50000" min="1000" step="5000" 
+                 value="{{ guidance.required_loan if guidance and guidance.success else '' }}" required>
+          <div class="form-help">Amount required for equipment, stock, or expansion.</div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">
+        Evaluate Loan Readiness &rarr;
+      </button>
+    </form>
+
+    <!-- Guidance Result -->
+    {% if guidance %}
+      {% if guidance.success %}
+      <div class="result-card" style="margin-top: 30px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+          <h3 style="color: var(--primary-green); font-size: 1.3rem;">Borrowing Assessment Overview</h3>
+          <span class="badge badge-{{ guidance.readiness_badge }}">{{ guidance.readiness }}</span>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-box">
+            <div class="metric-title">Estimated Monthly Income</div>
+            <div class="metric-value">₹ {{ "{:,.0f}".format(guidance.monthly_income) }}</div>
+          </div>
+
+          <div class="metric-box">
+            <div class="metric-title">Debt-to-Income (DTI) Ratio</div>
+            <div class="metric-value {% if guidance.dti_percentage > 40 %}danger{% endif %}">
+              {{ guidance.dti_percentage }}%
+            </div>
+            <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;">Should ideally be &lt; 35%</div>
+          </div>
+
+          <div class="metric-box">
+            <div class="metric-title">Loan to Income Multiple</div>
+            <div class="metric-value">
+              {{ guidance.loan_to_income_ratio }}x
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-{{ guidance.readiness_badge }}" style="margin: 15px 0;">
+          <strong>Advisor's Analysis:</strong> {{ guidance.readiness_advice }}
+        </div>
+
+        <!-- Loan Categories Recommendation -->
+        <h4 style="color: var(--primary-green); margin: 20px 0 10px 0;">Possible Loan Categories For Your Size</h4>
+        {% for cat in guidance.categories %}
+        <div class="scheme-section-box" style="margin-bottom: 12px;">
+          <strong>📌 {{ cat.name }} ({{ cat.range }})</strong>
+          <p>{{ cat.features }}</p>
+        </div>
+        {% endfor %}
+
+        <!-- Required Documents Checklist -->
+        <h4 style="color: var(--primary-green); margin: 20px 0 10px 0;">Commonly Required Documents Checklist</h4>
+        <ul style="padding-left: 20px; font-size: 0.95rem; color: var(--text-dark); line-height: 1.7;">
+          {% for doc in guidance.required_documents %}
+            <li>{{ doc }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% else %}
+      <div class="alert alert-danger" style="margin-top: 20px;">
+        {{ guidance.error }}
+      </div>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
