@@ -620,5 +620,6 @@ def admin_delete_scheme(scheme_id):
 # ====================================================================
 
 if __name__ == '__main__':
-    # Run development server on port 5000
-    app.run(debug=True, host='127.0.0.1', port=5000)
+    # Run server accessible across the local network (host='0.0.0.0') on port 5000
+    app.run(debug=True, host='0.0.0.0', port=5000)
+
