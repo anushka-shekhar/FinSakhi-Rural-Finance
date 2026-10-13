@@ -17,11 +17,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from config import Config
 from db import init_db, query_db, execute_db
-from finance_calc import (
-    calculate_business_finance, 
-    analyze_loan_guidance, 
-    calculate_monthly_budget
-)
+# finance_calc imported only if needed by remaining features
+# (loan_guidance, calculator, budget_planner features have been removed)
 from scheme_matcher import find_matching_schemes
 from translations import TRANSLATIONS, get_text
 
@@ -213,12 +210,11 @@ def logout():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    """User Dashboard: Displays entrepreneur details, quick tools, and user activity."""
+    """User Dashboard: Displays entrepreneur details and quick tools."""
     user_id = session.get('user_id')
     user = query_db("SELECT * FROM users WHERE id = %s", (user_id,), one=True)
-    user_feedback = query_db("SELECT * FROM feedback WHERE user_id = %s ORDER BY id DESC LIMIT 5", (user_id,))
     
-    return render_template('dashboard.html', user=user, feedback_list=user_feedback)
+    return render_template('dashboard.html', user=user)
 
 # ====================================================================
 # GOVERNMENT SCHEME FINDER
@@ -322,124 +318,28 @@ def awareness_detail(category_slug):
     return render_template('awareness_detail.html', article=content_view, other_topics=other_topics, lang=lang)
 
 # ====================================================================
-# BASIC LOAN GUIDANCE MODULE
+# REMOVED FEATURES — Redirect to home
+# (Loan Guidance, Calculator, Budget Planner, Feedback have been removed)
 # ====================================================================
 
-@app.route('/loan-guidance', methods=['GET', 'POST'])
-def loan_guidance():
-    """Educational assessment of borrowing capacity and preparation tips."""
-    guidance_result = None
-    if request.method == 'POST':
-        annual_income = request.form.get('annual_income', '0')
-        business_age = request.form.get('business_age', '0')
-        existing_loan = request.form.get('existing_loan', '0')
-        required_loan = request.form.get('required_loan', '0')
+@app.route('/loan-guidance')
+@app.route('/calculator')
+@app.route('/budget-planner')
+@app.route('/feedback', methods=['GET', 'POST'])
+def removed_feature():
+    """Deprecated routes — redirect to home page."""
+    flash('This feature is no longer available.', 'info')
+    return redirect(url_for('index'))
 
-        guidance_result = analyze_loan_guidance(
-            annual_income=annual_income,
-            business_age_years=business_age,
-            existing_loan_amount=existing_loan,
-            required_loan_amount=required_loan
-        )
 
-    return render_template('loan_guidance.html', guidance=guidance_result)
-
-# ====================================================================
-# BUSINESS FINANCE CALCULATOR MODULE
-# ====================================================================
-
-@app.route('/calculator', methods=['GET', 'POST'])
-def calculator():
-    """
-    Business Finance Calculator:
-    Computes Net Profit, Remaining Balance, Profit Margin %, and Savings Rate %.
-    """
-    calc_result = None
-    if request.method == 'POST':
-        income = request.form.get('monthly_income', '0')
-        expenses = request.form.get('monthly_expenses', '0')
-        savings = request.form.get('monthly_savings', '0')
-
-        calc_result = calculate_business_finance(
-            monthly_income=income,
-            monthly_expenses=expenses,
-            monthly_savings=savings
-        )
-
-    return render_template('calculator.html', result=calc_result)
-
-# ====================================================================
-# BUDGET PLANNER MODULE
-# ====================================================================
-
-@app.route('/budget-planner', methods=['GET', 'POST'])
-def budget_planner():
-    """Categorized monthly budget planner for rural enterprises."""
-    budget_result = None
-    if request.method == 'POST':
-        monthly_income = request.form.get('monthly_income', '0')
-        target_savings = request.form.get('target_savings', '0')
-        
-        expenses_dict = {
-            'Raw Materials / Stock': request.form.get('exp_raw_materials', '0'),
-            'Shop Rent / Stall Fee': request.form.get('exp_rent', '0'),
-            'Electricity & Water': request.form.get('exp_utilities', '0'),
-            'Transport & Freight': request.form.get('exp_transport', '0'),
-            'Household Expenses': request.form.get('exp_household', '0'),
-            'Miscellaneous': request.form.get('exp_misc', '0')
-        }
-
-        budget_result = calculate_monthly_budget(
-            monthly_income=monthly_income,
-            expenses_dict=expenses_dict,
-            target_savings=target_savings
-        )
-
-    return render_template('budget_planner.html', budget=budget_result)
-
-# ====================================================================
-# DIGITAL FRAUD AWARENESS MODULE
-# ====================================================================
 
 @app.route('/fraud-awareness')
 def fraud_awareness():
     """Detailed awareness on UPI scams, OTP fraud, fake loan websites, and safety rules."""
     return render_template('fraud_awareness.html')
 
-# ====================================================================
-# FEEDBACK MODULE
-# ====================================================================
 
-@app.route('/feedback', methods=['GET', 'POST'])
-@login_required
-def feedback():
-    """Allows logged-in users to submit suggestions and reviews."""
-    if request.method == 'POST':
-        user_id = session.get('user_id')
-        user_name = session.get('user_name')
-        mobile = session.get('mobile')
-        category = request.form.get('category', 'Suggestion')
-        rating = int(request.form.get('rating', '5'))
-        message = request.form.get('message', '').strip()
 
-        if not message:
-            flash('Please enter your feedback message.', 'danger')
-            return render_template('feedback.html')
-
-        try:
-            execute_db(
-                """
-                INSERT INTO feedback (user_id, user_name, mobile_number, category, rating, message, status)
-                VALUES (%s, %s, %s, %s, %s, %s, 'Reviewed')
-                """,
-                (user_id, user_name, mobile, category, rating, message)
-            )
-            flash('Thank you! Your feedback has been submitted successfully.', 'success')
-            return redirect(url_for('dashboard'))
-        except Exception as e:
-            flash(f'Error recording feedback: {e}', 'danger')
-
-    return render_template('feedback.html')
 
 # ====================================================================
 # ADMINISTRATOR DASHBOARD & CMS

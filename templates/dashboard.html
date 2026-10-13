@@ -11,11 +11,11 @@
   <!-- Welcome Banner -->
   <div class="dashboard-hero">
     <div class="dashboard-greeting">
-      <h2>Welcome, {{ user.full_name }}! 👋</h2>
-      <p>📍 Village: <strong>{{ user.village }}</strong> | 🏢 Enterprise: <strong>{{ user.business_type }}</strong></p>
+      <h2>Welcome, {{ user.full_name }}</h2>
+      <p>Village: <strong>{{ user.village }}</strong> &nbsp;|&nbsp; Enterprise: <strong>{{ user.business_type }}</strong></p>
     </div>
     <div class="dashboard-meta">
-      <span class="badge badge-success">Active Citizen Member</span>
+      <span class="badge badge-success">Active Member</span>
     </div>
   </div>
 
@@ -24,70 +24,60 @@
     <h3 style="color: var(--primary-green); margin-bottom: 15px;">Your Enterprise Toolkit</h3>
     <div class="card-grid" style="margin-bottom: 25px;">
       <div class="feature-card">
-        <div class="feature-icon-wrapper">🔍</div>
+        <div class="feature-icon-wrapper">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
         <h4 class="feature-title">Find Matching Schemes</h4>
         <p class="feature-desc">Check government subsidy and loan schemes tailored for {{ user.business_type }}.</p>
         <a href="{{ url_for('schemes') }}" class="btn btn-primary btn-sm">Find Schemes &rarr;</a>
       </div>
 
       <div class="feature-card">
-        <div class="feature-icon-wrapper">🧮</div>
-        <h4 class="feature-title">Business Calculator</h4>
-        <p class="feature-desc">Calculate monthly revenue, expenses, profit percentage, and safe savings buffer.</p>
-        <a href="{{ url_for('calculator') }}" class="btn btn-primary btn-sm">Calculate Profit &rarr;</a>
+        <div class="feature-icon-wrapper">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <h4 class="feature-title">Financial Awareness</h4>
+        <p class="feature-desc">Learn UPI safety, interest rates, insurance benefits, and cash-flow basics.</p>
+        <a href="{{ url_for('awareness') }}" class="btn btn-primary btn-sm">Explore Lessons &rarr;</a>
       </div>
 
       <div class="feature-card">
-        <div class="feature-icon-wrapper">📊</div>
-        <h4 class="feature-title">Monthly Budget</h4>
-        <p class="feature-desc">Track shop inventory, electricity, and household expenses to prevent cash deficits.</p>
-        <a href="{{ url_for('budget_planner') }}" class="btn btn-primary btn-sm">Open Budget &rarr;</a>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon-wrapper">💬</div>
-        <h4 class="feature-title">Submit Feedback</h4>
-        <p class="feature-desc">Send suggestions or questions about schemes directly to FinSakhi administrators.</p>
-        <a href="{{ url_for('feedback') }}" class="btn btn-secondary btn-sm">Give Feedback &rarr;</a>
+        <div class="feature-icon-wrapper">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h4 class="feature-title">Digital Fraud Safety</h4>
+        <p class="feature-desc">Protect your shop from UPI PIN scams, OTP fraud, and fake loan apps.</p>
+        <a href="{{ url_for('fraud_awareness') }}" class="btn btn-danger btn-sm">Fraud Safety Guide &rarr;</a>
       </div>
     </div>
   </div>
 
-  <!-- User Feedback History -->
+  <!-- Account Summary -->
   <div class="table-card">
     <div class="table-header">
-      <h3 class="table-title">Your Feedback & Suggestions History</h3>
-      <a href="{{ url_for('feedback') }}" class="btn btn-primary btn-sm">+ New Feedback</a>
+      <h3 class="table-title">Account Details</h3>
+      <a href="{{ url_for('logout') }}" class="btn btn-secondary btn-sm">Log Out</a>
     </div>
-
-    {% if feedback_list %}
     <table class="data-table">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Category</th>
-          <th>Rating</th>
-          <th>Message</th>
-          <th>Status</th>
-        </tr>
-      </thead>
       <tbody>
-        {% for f in feedback_list %}
         <tr>
-          <td>{{ f.created_at[:10] if f.created_at is string else f.created_at.strftime('%Y-%m-%d') }}</td>
-          <td><span class="badge badge-info">{{ f.category }}</span></td>
-          <td>{{ '★' * f.rating }}</td>
-          <td>{{ f.message }}</td>
-          <td>
-            <span class="badge badge-success">{{ f.status }}</span>
-          </td>
+          <td><strong>Full Name</strong></td>
+          <td>{{ user.full_name }}</td>
         </tr>
-        {% endfor %}
+        <tr>
+          <td><strong>Mobile Number</strong></td>
+          <td>{{ user.mobile_number }}</td>
+        </tr>
+        <tr>
+          <td><strong>Village</strong></td>
+          <td>{{ user.village }}</td>
+        </tr>
+        <tr>
+          <td><strong>Business Type</strong></td>
+          <td>{{ user.business_type }}</td>
+        </tr>
       </tbody>
     </table>
-    {% else %}
-    <p style="color: var(--text-muted); padding: 15px 0;">You have not submitted any feedback yet. We would love to hear your thoughts!</p>
-    {% endif %}
   </div>
 </div>
 {% endblock %}

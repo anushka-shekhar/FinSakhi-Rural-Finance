@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}FinSakhi - Smart Financial Awareness & Guidance for Rural Entrepreneurs{% endblock %}</title>
-  
-  <!-- Main Stylesheet -->
+  <title>{% block title %}FinSakhi - Smart Financial Awareness &amp; Guidance for Rural Entrepreneurs{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   {% block extra_css %}{% endblock %}
 </head>
@@ -15,109 +13,110 @@
   <header class="site-header">
     <div class="container">
       <div class="nav-wrapper">
-        <!-- Logo -->
+
+        <!-- Logo (no brand-tag) -->
         <a href="{{ url_for('index') }}" class="brand-logo" aria-label="FinSakhi Home">
-          <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="FinSakhi Logo" height="42">
-          <span class="brand-tag">Rural Fin</span>
+          <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="FinSakhi Logo" height="40">
         </a>
 
-        <!-- Mobile Menu Toggle Button -->
-        <button class="mobile-nav-toggle" aria-label="Toggle navigation menu">☰</button>
+        <!-- Mobile right controls: language + hamburger -->
+        <div class="mobile-controls">
+          <div class="lang-selector">
+            <a href="{{ url_for('set_language', lang='en') }}" class="lang-btn {% if current_lang == 'en' %}active{% endif %}">EN</a>
+            <a href="{{ url_for('set_language', lang='hi') }}" class="lang-btn {% if current_lang == 'hi' %}active{% endif %}">हि</a>
+            <a href="{{ url_for('set_language', lang='mr') }}" class="lang-btn {% if current_lang == 'mr' %}active{% endif %}">म</a>
+          </div>
+          <button class="mobile-nav-toggle" aria-label="Toggle navigation menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
 
         <!-- Navigation Links -->
-        <ul class="nav-links">
-          <li><a href="{{ url_for('index') }}">{{ t('nav_home') }}</a></li>
-          <li><a href="{{ url_for('schemes') }}">{{ t('nav_schemes') }}</a></li>
-          <li><a href="{{ url_for('awareness') }}">{{ t('nav_awareness') }}</a></li>
-          <li><a href="{{ url_for('loan_guidance') }}">{{ t('nav_loans') }}</a></li>
-          <li><a href="{{ url_for('calculator') }}">{{ t('nav_calculator') }}</a></li>
-          <li><a href="{{ url_for('budget_planner') }}">{{ t('nav_budget') }}</a></li>
-          <li><a href="{{ url_for('fraud_awareness') }}">{{ t('nav_fraud') }}</a></li>
-          <li><a href="{{ url_for('feedback') }}">{{ t('nav_feedback') }}</a></li>
-          
-          {% if user_id %}
-            <li><a href="{{ url_for('dashboard') }}" class="badge badge-success">{{ user_name }}</a></li>
-            <li><a href="{{ url_for('logout') }}">{{ t('nav_logout') }}</a></li>
-          {% elif is_admin %}
-            <li><a href="{{ url_for('admin_dashboard') }}" class="badge badge-warning">Admin</a></li>
-            <li><a href="{{ url_for('logout') }}">{{ t('nav_logout') }}</a></li>
-          {% else %}
-            <li><a href="{{ url_for('login') }}">{{ t('nav_login') }}</a></li>
-            <li><a href="{{ url_for('register') }}" class="btn btn-primary btn-sm" style="color:white;">{{ t('nav_register') }}</a></li>
-          {% endif %}
-        </ul>
+        <nav class="nav-links-wrapper">
+          <ul class="nav-links">
+            <li><a href="{{ url_for('index') }}">{{ t('nav_home') }}</a></li>
+            <li><a href="{{ url_for('schemes') }}">{{ t('nav_schemes') }}</a></li>
+            <li><a href="{{ url_for('awareness') }}">{{ t('nav_awareness') }}</a></li>
+            <li><a href="{{ url_for('fraud_awareness') }}">{{ t('nav_fraud') }}</a></li>
 
-        <!-- Language Selector -->
-        <div class="lang-selector">
-          <a href="{{ url_for('set_language', lang='en') }}" class="lang-btn {% if current_lang == 'en' %}active{% endif %}" title="English">EN</a>
-          <a href="{{ url_for('set_language', lang='hi') }}" class="lang-btn {% if current_lang == 'hi' %}active{% endif %}" title="हिन्दी">हिन्दी</a>
-          <a href="{{ url_for('set_language', lang='mr') }}" class="lang-btn {% if current_lang == 'mr' %}active{% endif %}" title="मराठी">मराठी</a>
-        </div>
+            {% if user_id %}
+              <li><a href="{{ url_for('dashboard') }}" class="nav-user-badge">{{ user_name }}</a></li>
+              <li><a href="{{ url_for('logout') }}">{{ t('nav_logout') }}</a></li>
+            {% elif is_admin %}
+              <li><a href="{{ url_for('admin_dashboard') }}" class="nav-user-badge">Admin</a></li>
+              <li><a href="{{ url_for('logout') }}">{{ t('nav_logout') }}</a></li>
+            {% else %}
+              <li><a href="{{ url_for('login') }}">{{ t('nav_login') }}</a></li>
+              <li><a href="{{ url_for('register') }}" class="btn btn-primary btn-sm nav-register">{{ t('nav_register') }}</a></li>
+            {% endif %}
+          </ul>
+
+          <!-- Desktop language selector (inside nav, hidden on mobile) -->
+          <div class="lang-selector desktop-lang">
+            <a href="{{ url_for('set_language', lang='en') }}" class="lang-btn {% if current_lang == 'en' %}active{% endif %}">EN</a>
+            <a href="{{ url_for('set_language', lang='hi') }}" class="lang-btn {% if current_lang == 'hi' %}active{% endif %}">हिन्दी</a>
+            <a href="{{ url_for('set_language', lang='mr') }}" class="lang-btn {% if current_lang == 'mr' %}active{% endif %}">मराठी</a>
+          </div>
+        </nav>
+
       </div>
     </div>
   </header>
 
-  <!-- Flash Messages Banner -->
+  <!-- Flash Messages -->
   <div class="container flash-container">
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
-          <div class="alert alert-{{ category }}">
-            <span>{{ message }}</span>
-          </div>
+          <div class="alert alert-{{ category }}"><span>{{ message }}</span></div>
         {% endfor %}
       {% endif %}
     {% endwith %}
   </div>
 
-  <!-- Main Body Content -->
+  <!-- Main Content -->
   <main>
     {% block content %}{% endblock %}
   </main>
 
-  <!-- Global Footer -->
+  <!-- Footer -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-top">
         <div>
-          <div class="footer-title">FinSakhi (फिनसखी)</div>
-          <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 12px;">
-            {{ t('footer_text') }}
-          </p>
+          <div class="footer-title">FinSakhi</div>
+          <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:12px;">{{ t('footer_text') }}</p>
           <div class="disclaimer-banner">
             <strong>Academic Note:</strong> {{ t('disclaimer_note') }}
           </div>
         </div>
-
         <div>
-          <div class="footer-title">Quick Modules</div>
+          <div class="footer-title">Quick Links</div>
           <ul class="footer-links">
             <li><a href="{{ url_for('schemes') }}">{{ t('nav_schemes') }}</a></li>
             <li><a href="{{ url_for('awareness') }}">{{ t('nav_awareness') }}</a></li>
-            <li><a href="{{ url_for('calculator') }}">{{ t('nav_calculator') }}</a></li>
-            <li><a href="{{ url_for('loan_guidance') }}">{{ t('nav_loans') }}</a></li>
             <li><a href="{{ url_for('fraud_awareness') }}">{{ t('nav_fraud') }}</a></li>
           </ul>
         </div>
-
         <div>
-          <div class="footer-title">Citizen Help & Support</div>
+          <div class="footer-title">Support</div>
           <ul class="footer-links">
-            <li><a href="{{ url_for('feedback') }}">{{ t('nav_feedback') }}</a></li>
-            <li><a href="https://cybercrime.gov.in" target="_blank" rel="noopener">National Cyber Helpline: 1930</a></li>
+            <li><a href="https://cybercrime.gov.in" target="_blank" rel="noopener">Cyber Helpline: 1930</a></li>
             <li><a href="https://www.mudra.org.in" target="_blank" rel="noopener">MUDRA Portal</a></li>
-            <li><a href="{{ url_for('admin_login') }}">{{ t('nav_admin') }}</a></li>
+            <li><a href="{{ url_for('admin_login') }}">Admin Portal</a></li>
           </ul>
         </div>
       </div>
-
       <div class="footer-bottom">
-        <p>© 2026 FinSakhi. Developed for College Computer Engineering (Semester 1–3 Project: Python, Flask, DBMS, MySQL, HTML/CSS).</p>
+        <p>&copy; 2026 FinSakhi &mdash; College Computer Engineering Project (Semester 1&ndash;3)</p>
       </div>
     </div>
   </footer>
 
-  <!-- Core JavaScript -->
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
   {% block extra_js %}{% endblock %}
 </body>

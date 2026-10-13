@@ -6,13 +6,21 @@
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Mobile Menu Toggle
     const toggleBtn = document.querySelector('.mobile-nav-toggle');
-    const navLinks = document.querySelector('.nav-links');
+    const navWrapper = document.querySelector('.nav-links-wrapper');
 
-    if (toggleBtn && navLinks) {
+    if (toggleBtn && navWrapper) {
         toggleBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('show');
-            const isExpanded = navLinks.classList.contains('show');
+            navWrapper.classList.toggle('show');
+            const isExpanded = navWrapper.classList.contains('show');
             toggleBtn.setAttribute('aria-expanded', isExpanded);
+        });
+
+        // Close nav when a link inside it is clicked (SPA-style navigation)
+        navWrapper.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navWrapper.classList.remove('show');
+                toggleBtn.setAttribute('aria-expanded', 'false');
+            });
         });
     }
 

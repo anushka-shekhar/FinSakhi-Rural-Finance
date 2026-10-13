@@ -1,38 +1,32 @@
 {% extends "base.html" %}
-
 {% block title %}Government Scheme Finder - FinSakhi{% endblock %}
 
 {% block content %}
-<div class="container" style="padding-top: 30px; padding-bottom: 50px;">
+<div class="container" style="padding-top: 36px; padding-bottom: 60px;">
   <div class="section-header">
-    <h1 class="section-title">🏛️ Government Scheme Finder</h1>
+    <h1 class="section-title">Government Scheme Finder</h1>
     <p class="section-subtitle">
-      Find government credit and subsidy schemes tailored for your enterprise type and funding needs.
+      Enter your enterprise details to discover eligible government credit and subsidy programmes.
     </p>
   </div>
 
   <!-- Search Form -->
-  <div class="form-card" style="max-width: 800px; margin-bottom: 35px;">
+  <div class="form-card" style="max-width: 800px; margin-bottom: 40px;">
     <form method="POST" action="{{ url_for('schemes') }}">
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label" for="business_type">Your Business Type / व्यवसाय प्रकार *</label>
+          <label class="form-label" for="business_type">Business Type</label>
           <select id="business_type" name="business_type" class="form-control" required>
             {% for b in business_types %}
-              <option value="{{ b }}" {% if matched_data and matched_data.searched_criteria.business_type == b %}selected{% endif %}>
-                {{ b }}
-              </option>
+              <option value="{{ b }}" {% if matched_data and matched_data.searched_criteria.business_type == b %}selected{% endif %}>{{ b }}</option>
             {% endfor %}
           </select>
         </div>
-
         <div class="form-group">
-          <label class="form-label" for="state">State / राज्य *</label>
+          <label class="form-label" for="state">State</label>
           <select id="state" name="state" class="form-control" required>
             {% for s in states %}
-              <option value="{{ s }}" {% if matched_data and matched_data.searched_criteria.state == s %}selected{% endif %}>
-                {{ s }}
-              </option>
+              <option value="{{ s }}" {% if matched_data and matched_data.searched_criteria.state == s %}selected{% endif %}>{{ s }}</option>
             {% endfor %}
           </select>
         </div>
@@ -40,35 +34,41 @@
 
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label" for="annual_income">Annual Family / Business Income (₹) *</label>
-          <input type="number" id="annual_income" name="annual_income" class="form-control" 
-                 value="{{ matched_data.searched_criteria.annual_income if matched_data else '180000' }}" min="0" step="5000" required>
-          <div class="form-help">Enter 0 if you are starting from scratch or do not have fixed income.</div>
+          <label class="form-label" for="annual_income">Annual Business Income (Rs.)</label>
+          <input type="number" id="annual_income" name="annual_income" class="form-control"
+                 value="{{ matched_data.searched_criteria.annual_income if matched_data else '180000' }}"
+                 min="0" step="5000" required>
+          <div class="form-help">Enter 0 if you are newly starting.</div>
         </div>
-
         <div class="form-group">
-          <label class="form-label" for="required_loan">Required Loan / Working Capital (₹) *</label>
-          <input type="number" id="required_loan" name="required_loan" class="form-control" 
-                 value="{{ matched_data.searched_criteria.required_loan_amount if matched_data else '50000' }}" min="1000" step="5000" required>
-          <div class="form-help">Amount needed for raw materials, machinery, or shop expansion.</div>
+          <label class="form-label" for="required_loan">Required Loan Amount (Rs.)</label>
+          <input type="number" id="required_loan" name="required_loan" class="form-control"
+                 value="{{ matched_data.searched_criteria.required_loan_amount if matched_data else '50000' }}"
+                 min="1000" step="5000" required>
+          <div class="form-help">Amount needed for materials, equipment, or expansion.</div>
         </div>
       </div>
 
-      <button type="submit" class="btn btn-primary btn-block" style="margin-top: 10px;">
-        🔍 Check Eligible Schemes
+      <button type="submit" class="btn btn-primary btn-block" style="margin-top: 12px;">
+        Search Eligible Schemes
       </button>
     </form>
   </div>
 
-  <!-- Matching Results Section -->
+  <!-- Results after search -->
   {% if has_searched %}
-    <div style="margin-bottom: 25px;">
-      <h2 style="color: var(--primary-green); font-size: 1.4rem; margin-bottom: 8px;">
-        Matching Results: Found {{ matched_data.count }} Eligible Scheme(s)
+    <div style="margin-bottom: 28px;">
+      <h2 style="color:var(--primary-green);font-size:1.35rem;margin-bottom:6px;">
+        {% if matched_data.count > 0 %}
+          {{ matched_data.count }} Eligible Scheme(s) Found
+        {% else %}
+          No Matching Schemes Found
+        {% endif %}
       </h2>
-      <p style="color: var(--text-muted); font-size: 0.92rem;">
-        Evaluated for <strong>{{ matched_data.searched_criteria.business_type }}</strong> in 
-        <strong>{{ matched_data.searched_criteria.state }}</strong> with loan need <strong>₹ {{ "{:,.0f}".format(matched_data.searched_criteria.required_loan_amount) }}</strong>.
+      <p style="color:var(--text-muted);font-size:0.9rem;">
+        Results for <strong>{{ matched_data.searched_criteria.business_type }}</strong>
+        in <strong>{{ matched_data.searched_criteria.state }}</strong>,
+        loan requirement <strong>Rs. {{ "{:,.0f}".format(matched_data.searched_criteria.required_loan_amount) }}</strong>.
       </p>
     </div>
 
@@ -76,80 +76,62 @@
       {% for s in matched_data.matched_schemes %}
       <div class="scheme-card">
         <div class="scheme-header">
-          <div>
+          <div style="flex:1;">
             <div class="scheme-title">{{ s.scheme_name }}</div>
             <div class="scheme-meta">
-              <span>🏷️ Code: <strong>{{ s.scheme_code }}</strong></span>
-              <span>📂 Category: <strong>{{ s.category }}</strong></span>
-              <span>📍 Applicable: <strong>{{ s.state_applicability }}</strong></span>
-              <span>💰 Max Loan: <strong>₹ {{ "{:,.0f}".format(s.max_loan_amount) }}</strong></span>
+              <span>{{ s.category }}</span>
+              <span>{{ s.state_applicability }}</span>
+              <span>Up to Rs. {{ "{:,.0f}".format(s.max_loan_amount) }}</span>
             </div>
           </div>
           {% if s.subsidy_percentage > 0 %}
-            <span class="scheme-subsidy">{{ s.subsidy_percentage }}% Govt Subsidy</span>
+            <span class="scheme-subsidy">{{ s.subsidy_percentage }}% Subsidy</span>
           {% else %}
-            <span class="badge badge-info">Collateral-Free Credit</span>
+            <span class="badge badge-info">Collateral-Free</span>
           {% endif %}
         </div>
 
-        <div class="scheme-desc">
-          {{ s.description }}
-        </div>
+        <div class="scheme-desc">{{ s.description }}</div>
 
         <div class="scheme-section-box">
-          <strong>📑 Required Documents (आवश्यक कागदपत्रे / दस्तावेज):</strong>
+          <strong>Required Documents:</strong>
           <p>{{ s.required_documents }}</p>
         </div>
 
         <div class="scheme-section-box">
-          <strong>📝 How to Apply (अर्ज करण्याची पद्धत / आवेदन प्रक्रिया):</strong>
+          <strong>How to Apply:</strong>
           <p>{{ s.how_to_apply }}</p>
         </div>
 
         {% if s.official_portal %}
-        <div style="margin-top: 14px; text-align: right;">
+        <div style="margin-top:14px;text-align:right;">
           <a href="{{ s.official_portal }}" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">
-            Visit Official Portal &rarr;
+            Visit Official Portal
           </a>
         </div>
         {% endif %}
       </div>
       {% endfor %}
+
     {% else %}
-      <div class="alert alert-warning" style="padding: 24px;">
-        <h4>No Exact Match Found for the Selected Criteria</h4>
-        <p style="margin-top: 8px;">
-          Your requested loan amount or specific business type did not match any restricted category schemes.
-          However, general micro-credit schemes such as <strong>MUDRA Shishu (up to ₹50,000)</strong> are open to almost all non-farm micro-enterprises across India!
-        </p>
-        <p style="margin-top: 8px;">
-          Try adjusting the required loan amount or selecting "All India" as state.
-        </p>
+      <div class="alert alert-warning" style="padding:22px;">
+        <h4 style="margin-bottom:8px;">No Exact Match Found</h4>
+        <p>Your criteria did not match any schemes in our database. Please try adjusting your loan amount, selecting "All India" as state, or choosing a different business type.</p>
+        <p style="margin-top:8px;">General schemes such as <strong>MUDRA Shishu (up to Rs. 50,000)</strong> are open to almost all micro-enterprises across India.</p>
       </div>
     {% endif %}
 
   {% else %}
-    <!-- Initial Browse: Show All Registered Schemes -->
-    <div style="margin-top: 20px;">
-      <h3 style="color: var(--primary-green); margin-bottom: 20px;">All Available Schemes in Database</h3>
-      {% for s in all_schemes %}
-      <div class="scheme-card">
-        <div class="scheme-header">
-          <div>
-            <div class="scheme-title">{{ s.scheme_name }}</div>
-            <div class="scheme-meta">
-              <span>🏷️ {{ s.category }}</span>
-              <span>📍 {{ s.state_applicability }}</span>
-              <span>💰 Up to ₹ {{ "{:,.0f}".format(s.max_loan_amount) }}</span>
-            </div>
-          </div>
-          {% if s.subsidy_percentage > 0 %}
-            <span class="scheme-subsidy">{{ s.subsidy_percentage }}% Subsidy</span>
-          {% endif %}
-        </div>
-        <p class="scheme-desc">{{ s.description_en }}</p>
-      </div>
-      {% endfor %}
+    <!-- Introductory information instead of raw DB dump -->
+    <div style="background:#f8faf8;border:1px solid var(--border-cream);border-radius:var(--border-radius);padding:32px;text-align:center;">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:16px;">
+        <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <h3 style="color:var(--primary-green);margin-bottom:10px;">Find the Right Scheme for Your Enterprise</h3>
+      <p style="color:var(--text-muted);max-width:520px;margin:0 auto;">
+        Our database includes schemes such as MUDRA, PM SVANidhi, PMEGP, Stand-Up India, KCC, and state-level programmes.
+        Fill in the form above to check which schemes match your business profile.
+      </p>
     </div>
   {% endif %}
 </div>

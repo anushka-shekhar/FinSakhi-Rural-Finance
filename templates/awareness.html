@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container" style="padding-top: 30px; padding-bottom: 50px;">
   <div class="section-header">
-    <h1 class="section-title">📚 Financial Awareness Lessons</h1>
+    <h1 class="section-title">Financial Awareness Lessons</h1>
     <p class="section-subtitle">
       Essential financial knowledge written in simple everyday language with practical village examples.
     </p>
@@ -16,12 +16,7 @@
     <div class="feature-card">
       <div>
         <div class="feature-icon-wrapper">
-          {% if 'upi' in a.category_slug %}📱
-          {% elif 'bank' in a.category_slug %}🏦
-          {% elif 'loan' in a.category_slug %}💼
-          {% elif 'insurance' in a.category_slug %}🛡️
-          {% elif 'savings' in a.category_slug %}💰
-          {% else %}📈{% endif %}
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
         </div>
         
         <h3 class="feature-title">
