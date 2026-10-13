@@ -87,9 +87,9 @@ TRANSLATIONS = {
         'mr': 'तुमच्या व्यवसायाच्या आर्थिक प्रगतीचा खरा सखा'
     },
     'hero_desc': {
-        'en': 'Understand bank loans, discover eligible government subsidies, calculate true business profits, and protect your hard-earned money from digital scams.',
-        'hi': 'बैंक ऋण को समझें, उपयुक्त सरकारी योजनाओं की खोज करें, शुद्ध लाभ की गणना करें और अपनी मेहनत की कमाई को ऑनलाइन धोखाधड़ी से सुरक्षित रखें।',
-        'mr': 'बँक कर्जाचे नियम समजून घ्या, शासकीय सबसिडी योजना शोधा, व्यवसायाचा खरा नफा काढा आणि सायबर फसवणुकीपासून स्वतःला सुरक्षित ठेवा.'
+        'en': 'Discover eligible government subsidies, build financial awareness, and protect your hard-earned money from digital scams — in your own language.',
+        'hi': 'उपयुक्त सरकारी योजनाओं की खोज करें, वित्तीय जागरूकता बढ़ाएं और अपनी मेहनत की कमाई को ऑनलाइन धोखाधड़ी से सुरक्षित रखें — अपनी भाषा में।',
+        'mr': 'शासकीय सबसिडी योजना शोधा, आर्थिक साक्षरता वाढवा आणि सायबर फसवणुकीपासून स्वतःला सुरक्षित ठेवा — तुमच्या भाषेत.'
     },
     'get_started': {
         'en': 'Find Government Schemes',
@@ -127,14 +127,14 @@ TRANSLATIONS = {
         'mr': 'तुमचा व्यवसाय, राज्य आणि वार्षिक उत्पन्न टाकून मुद्रा, पीएमईजीपी आणि स्वनिधी योजनांची अचूक माहिती मिळवा.'
     },
     'step3_title': {
-        'en': '3. Simple Math Calculators',
-        'hi': '३. सरल व्यावसायिक कैलकुलेटर',
-        'mr': '३. सोपे व्यवसाय गणक'
+        'en': '3. Stay Protected from Fraud',
+        'hi': '३. ऑनलाइन धोखाधड़ी से सुरक्षित रहें',
+        'mr': '३. फसवणुकीपासून सुरक्षित राहा'
     },
     'step3_desc': {
-        'en': 'Compute your monthly profit margins, check savings percentages, and plan your family and shop budget easily.',
-        'hi': 'अपने शुद्ध मुनाफ़े, बचत प्रतिशत की तुरंत गणना करें और दुकान व घर के मासिक बजट का सही हिसाब रखें।',
-        'mr': 'मासिक नफा, बचत टक्केवारी अचूक मोजा आणि दुकान व घराचा मासिक जमा-खर्च पद्धतशीरपणे मांडा.'
+        'en': 'Learn the golden rules of UPI safety, how to spot fake loan apps, and how to report cyber fraud on the national helpline 1930.',
+        'hi': 'यूपीआई सुरक्षा के स्वर्णिम नियम जानें, नकली लोन ऐप्स को पहचानें और राष्ट्रीय साइबर हेल्पलाइन 1930 पर शिकायत दर्ज करें।',
+        'mr': 'यूपीआय सुरक्षेचे महत्त्वाचे नियम जाणून घ्या, बनावट लोन ॲप ओळखा आणि राष्ट्रीय सायबर हेल्पलाइन 1930 वर तक्रार नोंदवा.'
     },
     'step4_title': {
         'en': '4. Shield Against Scams',
