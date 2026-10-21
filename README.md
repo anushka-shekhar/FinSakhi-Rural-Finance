@@ -21,7 +21,7 @@ Rural micro-entrepreneurs in India — village grocery (*kirana*) shopkeepers, d
 
 | Subject | Concept | Implementation in FinSakhi |
 |:---|:---|:---|
-| **DBMS** | Relational Schema, Normalization, Primary/Foreign Keys, ACID | Tables: `users`, `schemes`, `financial_content`, `feedback`, `admin_users` |
+| **DBMS** | Relational Schema, Normalization, Primary/Foreign Keys, ACID | Tables: `users`, `schemes`, `financial_content`, `admin_users` |
 | **SQL** | Parameterized Queries, CRUD, Transactions | `%s` placeholders in `db.py` prevent SQL Injection; full CRUD in Admin panel |
 | **Python Programming** | Functions, Decorators, Sessions, Modular Architecture | Flask routing in `app.py`, `@login_required`, `@admin_required` decorators |
 | **Web Technologies** | HTML5, CSS3, Responsive Design | Semantic HTML5 elements, CSS Grid/Flexbox, mobile-first responsive layout |
@@ -59,13 +59,12 @@ Rural micro-entrepreneurs in India — village grocery (*kirana*) shopkeepers, d
 | **Financial Awareness** | `/awareness` | 6 categories of financial education in EN/HI/MR |
 | Awareness Detail | `/awareness/<slug>` | Explanation, real example, safety tips per topic |
 | Fraud Awareness | `/fraud-awareness` | Digital fraud prevention, scam types, helpline 1930 |
-| Feedback | `/feedback` | Submit rating and message |
 
 ### Admin Features
 | Feature | Route | Description |
 |:---|:---|:---|
 | Admin Login | `/admin/login` | Separate admin authentication |
-| Admin Dashboard | `/admin/dashboard` | Stats: total users, schemes, feedback |
+| Admin Dashboard | `/admin/dashboard` | Stats: total users, schemes, awareness lessons |
 | Manage Schemes | `/admin/schemes` | View all government schemes |
 | Add Scheme | `/admin/schemes/add` | Add new government scheme |
 | Edit Scheme | `/admin/schemes/edit/<id>` | Update scheme details |
@@ -104,7 +103,6 @@ users              — Registered rural entrepreneurs
 admin_users        — Administrator accounts
 schemes            — Government scheme data (multilingual)
 financial_content  — Awareness education content (multilingual)
-feedback           — User feedback submissions
 ```
 
 ### Database Connection (`db.py`)
@@ -142,7 +140,6 @@ finsakhi/
     ├── awareness.html        # Awareness Categories List
     ├── awareness_detail.html # Individual Awareness Topic
     ├── fraud_awareness.html  # Fraud Shield & Scam Guidance
-    ├── feedback.html         # Feedback Submission
     └── admin/
         ├── admin_login.html       # Admin Login
         ├── admin_dashboard.html   # Admin Dashboard with Stats
@@ -176,7 +173,7 @@ The app is deployed at: **[https://finsakhi-rural-finance.onrender.com](https://
 
 | Role | Username / Mobile | Password | Access |
 |:---|:---|:---|:---|
-| **System Administrator** | `admin` | `admin123` | Full CMS, Feedback Viewer, Scheme CRUD |
+| **System Administrator** | `admin` | `admin123` | Full CMS, Scheme CRUD, User Management |
 | **Demo User 1** | `9876543210` | `user123` | Dairy Business Owner Dashboard |
 | **Demo User 2** | `9811223344` | `user123` | Kirana Store Owner Dashboard |
 

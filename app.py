@@ -371,28 +371,22 @@ def admin_login():
 @app.route('/admin/dashboard')
 @admin_required
 def admin_dashboard():
-    """Administrator Overview: Stats, user feedback, and management links."""
+    """Administrator Overview: Stats, user list, and management links."""
     # Summary Statistics
     total_users = query_db("SELECT COUNT(*) as count FROM users", one=True)['count']
     total_schemes = query_db("SELECT COUNT(*) as count FROM schemes", one=True)['count']
-    total_feedback = query_db("SELECT COUNT(*) as count FROM feedback", one=True)['count']
     total_articles = query_db("SELECT COUNT(*) as count FROM financial_content", one=True)['count']
     
     # Registered Users List (for admin to view all registered entrepreneurs)
     all_users = query_db("SELECT id, full_name, mobile_number, village, business_type, created_at FROM users ORDER BY id DESC")
-    
-    # Recent Feedback
-    recent_feedback = query_db("SELECT * FROM feedback ORDER BY id DESC LIMIT 10")
     
     return render_template(
         'admin/admin_dashboard.html',
         stats={
             'users': total_users,
             'schemes': total_schemes,
-            'feedback': total_feedback,
             'articles': total_articles
         },
-        feedback_list=recent_feedback,
         users_list=all_users
     )
 

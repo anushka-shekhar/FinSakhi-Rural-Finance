@@ -11,19 +11,19 @@
   <!-- Admin Header -->
   <div class="dashboard-hero">
     <div class="dashboard-greeting">
-      <h2>🛡️ FinSakhi System Administration</h2>
-      <p>Content Management System (CMS), Scheme Database, and User Management</p>
+      <h2>FinSakhi System Administration</h2>
+      <p>Content Management System (CMS), Government Scheme Database, and User Management</p>
     </div>
     <div class="dashboard-meta">
-      <a href="{{ url_for('admin_schemes') }}" class="btn btn-primary btn-sm">⚙️ Manage Schemes</a>
+      <a href="{{ url_for('admin_schemes') }}" class="btn btn-primary btn-sm">Manage Schemes</a>
       <a href="{{ url_for('logout') }}" class="btn btn-secondary btn-sm">Exit Admin</a>
     </div>
   </div>
 
-  <!-- Metric Statistics Cards -->
+  <!-- Metric Statistics Cards (3 Core Pillars) -->
   <div class="stats-grid">
     <div class="stat-card">
-      <div class="stat-icon">👥</div>
+      <div class="stat-icon">&#128101;</div>
       <div class="stat-info">
         <h4>Registered Entrepreneurs</h4>
         <div class="stat-val">{{ stats.users }}</div>
@@ -31,7 +31,7 @@
     </div>
 
     <div class="stat-card">
-      <div class="stat-icon">🏛️</div>
+      <div class="stat-icon">&#127963;</div>
       <div class="stat-info">
         <h4>Government Schemes</h4>
         <div class="stat-val">{{ stats.schemes }}</div>
@@ -39,15 +39,7 @@
     </div>
 
     <div class="stat-card">
-      <div class="stat-icon">💬</div>
-      <div class="stat-info">
-        <h4>Citizen Feedback</h4>
-        <div class="stat-val">{{ stats.feedback }}</div>
-      </div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon">📊</div>
+      <div class="stat-icon">&#128218;</div>
       <div class="stat-info">
         <h4>Awareness Lessons</h4>
         <div class="stat-val">{{ stats.articles }}</div>
@@ -63,9 +55,9 @@
   </div>
 
   <!-- ============================================================ -->
-  <!-- REGISTERED USERS TABLE (NEW) -->
+  <!-- REGISTERED USERS TABLE -->
   <!-- ============================================================ -->
-  <div class="table-card" style="margin-bottom: 30px;">
+  <div class="table-card">
     <div class="table-header">
       <h3 class="table-title">Registered Entrepreneurs</h3>
       <span class="badge badge-info">{{ users_list|length }} Users Registered</span>
@@ -98,47 +90,6 @@
     </table>
     {% else %}
     <p style="color: var(--text-muted); padding: 15px 0;">No users registered yet.</p>
-    {% endif %}
-  </div>
-
-  <!-- ============================================================ -->
-  <!-- CITIZEN FEEDBACK TABLE -->
-  <!-- ============================================================ -->
-  <div class="table-card">
-    <div class="table-header">
-      <h3 class="table-title">Recent Citizen Feedback</h3>
-      <span class="badge badge-info">{{ feedback_list|length }} Feedback Received</span>
-    </div>
-
-    {% if feedback_list %}
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Citizen Name</th>
-          <th>Mobile</th>
-          <th>Category</th>
-          <th>Rating</th>
-          <th>Message</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for f in feedback_list %}
-        <tr>
-          <td>{{ f.created_at[:10] if f.created_at is string else f.created_at.strftime('%Y-%m-%d') if f.created_at else 'N/A' }}</td>
-          <td><strong>{{ f.user_name }}</strong></td>
-          <td>{{ f.mobile_number }}</td>
-          <td><span class="badge badge-info">{{ f.category }}</span></td>
-          <td>{{ '⭐' * f.rating }}</td>
-          <td style="max-width: 320px;">{{ f.message }}</td>
-          <td><span class="badge badge-success">{{ f.status }}</span></td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% else %}
-    <p style="color: var(--text-muted); padding: 15px 0;">No citizen feedback recorded yet.</p>
     {% endif %}
   </div>
 </div>
