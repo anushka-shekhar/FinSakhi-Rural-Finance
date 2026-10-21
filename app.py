@@ -378,6 +378,9 @@ def admin_dashboard():
     total_feedback = query_db("SELECT COUNT(*) as count FROM feedback", one=True)['count']
     total_articles = query_db("SELECT COUNT(*) as count FROM financial_content", one=True)['count']
     
+    # Registered Users List (for admin to view all registered entrepreneurs)
+    all_users = query_db("SELECT id, full_name, mobile_number, village, business_type, created_at FROM users ORDER BY id DESC")
+    
     # Recent Feedback
     recent_feedback = query_db("SELECT * FROM feedback ORDER BY id DESC LIMIT 10")
     
@@ -389,7 +392,8 @@ def admin_dashboard():
             'feedback': total_feedback,
             'articles': total_articles
         },
-        feedback_list=recent_feedback
+        feedback_list=recent_feedback,
+        users_list=all_users
     )
 
 

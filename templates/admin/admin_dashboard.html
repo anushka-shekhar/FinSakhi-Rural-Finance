@@ -12,7 +12,7 @@
   <div class="dashboard-hero">
     <div class="dashboard-greeting">
       <h2>🛡️ FinSakhi System Administration</h2>
-      <p>Content Management System (CMS), Scheme Database, and Citizen Feedback Review</p>
+      <p>Content Management System (CMS), Scheme Database, and User Management</p>
     </div>
     <div class="dashboard-meta">
       <a href="{{ url_for('admin_schemes') }}" class="btn btn-primary btn-sm">⚙️ Manage Schemes</a>
@@ -47,7 +47,7 @@
     </div>
 
     <div class="stat-card">
-      <div class="stat-icon">📚</div>
+      <div class="stat-icon">📊</div>
       <div class="stat-info">
         <h4>Awareness Lessons</h4>
         <div class="stat-val">{{ stats.articles }}</div>
@@ -62,11 +62,52 @@
     <a href="{{ url_for('awareness') }}" class="btn btn-secondary">Review Financial Lessons</a>
   </div>
 
-  <!-- User Feedback Review Table -->
+  <!-- ============================================================ -->
+  <!-- REGISTERED USERS TABLE (NEW) -->
+  <!-- ============================================================ -->
+  <div class="table-card" style="margin-bottom: 30px;">
+    <div class="table-header">
+      <h3 class="table-title">Registered Entrepreneurs</h3>
+      <span class="badge badge-info">{{ users_list|length }} Users Registered</span>
+    </div>
+
+    {% if users_list %}
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Full Name</th>
+          <th>Mobile Number</th>
+          <th>Village</th>
+          <th>Business Type</th>
+          <th>Registered On</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for u in users_list %}
+        <tr>
+          <td>{{ u.id }}</td>
+          <td><strong>{{ u.full_name }}</strong></td>
+          <td>{{ u.mobile_number }}</td>
+          <td>{{ u.village }}</td>
+          <td><span class="badge badge-info">{{ u.business_type }}</span></td>
+          <td>{{ u.created_at[:10] if u.created_at is string else u.created_at.strftime('%Y-%m-%d') if u.created_at else 'N/A' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p style="color: var(--text-muted); padding: 15px 0;">No users registered yet.</p>
+    {% endif %}
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- CITIZEN FEEDBACK TABLE -->
+  <!-- ============================================================ -->
   <div class="table-card">
     <div class="table-header">
-      <h3 class="table-title">Recent Citizen Feedback & Inquiries</h3>
-      <span class="badge badge-info">{{ feedback_list|length }} Inquiries Displayed</span>
+      <h3 class="table-title">Recent Citizen Feedback</h3>
+      <span class="badge badge-info">{{ feedback_list|length }} Feedback Received</span>
     </div>
 
     {% if feedback_list %}
@@ -85,11 +126,11 @@
       <tbody>
         {% for f in feedback_list %}
         <tr>
-          <td>{{ f.created_at[:10] if f.created_at is string else f.created_at.strftime('%Y-%m-%d') }}</td>
+          <td>{{ f.created_at[:10] if f.created_at is string else f.created_at.strftime('%Y-%m-%d') if f.created_at else 'N/A' }}</td>
           <td><strong>{{ f.user_name }}</strong></td>
           <td>{{ f.mobile_number }}</td>
           <td><span class="badge badge-info">{{ f.category }}</span></td>
-          <td>{{ '★' * f.rating }}</td>
+          <td>{{ '⭐' * f.rating }}</td>
           <td style="max-width: 320px;">{{ f.message }}</td>
           <td><span class="badge badge-success">{{ f.status }}</span></td>
         </tr>
