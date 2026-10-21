@@ -37,14 +37,14 @@
           <label class="form-label" for="annual_income">Annual Business Income (Rs.)</label>
           <input type="number" id="annual_income" name="annual_income" class="form-control"
                  value="{{ matched_data.searched_criteria.annual_income if matched_data else '180000' }}"
-                 min="0" step="5000" required>
+                 min="0" step="1" required>
           <div class="form-help">Enter 0 if you are newly starting.</div>
         </div>
         <div class="form-group">
           <label class="form-label" for="required_loan">Required Loan Amount (Rs.)</label>
           <input type="number" id="required_loan" name="required_loan" class="form-control"
                  value="{{ matched_data.searched_criteria.required_loan_amount if matched_data else '50000' }}"
-                 min="1000" step="5000" required>
+                 min="1000" step="1" required>
           <div class="form-help">Amount needed for materials, equipment, or expansion.</div>
         </div>
       </div>

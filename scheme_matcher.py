@@ -51,11 +51,17 @@ def find_matching_schemes(business_type, state, annual_income, required_loan_amo
         )
 
         # Condition 2: Business Type Match
+        # eligible_business_types in DB is a comma-separated string like "Dairy,Kirana,Handicraft"
+        # Form business_type is like "Agriculture & Dairy" or "Small Grocery / Kirana"
+        # We check both directions: if any DB keyword appears in user's selection, or vice versa
         eligible_types = [t.strip().lower() for t in s.get('eligible_business_types', 'All').split(',')]
+        user_btype = business_type.lower().strip()
         business_match = (
-            'all' in eligible_types or 
-            business_type.lower() in eligible_types or
-            any(business_type.lower() in t for t in eligible_types)
+            'all' in eligible_types or
+            'all rural business' in eligible_types or
+            user_btype in eligible_types or
+            any(t in user_btype for t in eligible_types) or
+            any(user_btype in t for t in eligible_types)
         )
 
         # Condition 3: Income Ceiling Match
